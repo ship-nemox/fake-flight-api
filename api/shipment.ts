@@ -70,32 +70,17 @@ const DEMO_SHIPMENT: ShipmentResponse = {
   lastUpdated: '2025-11-08T11:30:00Z'
 };
 
-function normalizeAwb(raw: string): string {
-  // Remove spaces and normalize hyphen for comparison
-  return raw.replace(/\s+/g, '').replace(/--+/g, '-').toUpperCase();
-}
-
 export default function handler(req: VercelRequest, res: VercelResponse) {
   const awbParam = (req.query.awb as string) || '';
 
   if (!awbParam) {
     res.status(400).json({
-      error: 'Missing awb parameter. Example: /api/shipment?awb=235-7167 9705'
+      error: 'Missing awb parameter. Example: /api/shipment?awb=235-7167-9705'
     });
     return;
   }
 
-  const normalized = normalizeAwb(awbParam);
-
-  // Accept variations: "235-7167 9705", "23571679705", "235-71679705", etc.
-  const knownVariants = [
-    '235-71679705',
-    '23571679705',
-    '235-7167-9705',
-    '235-7167 9705'
-  ].map(normalizeAwb);
-
-  if (!knownVariants.includes(normalized)) {
+  if (awbParam != '235-7167-9705') {
     res.status(404).json({
       error: 'Shipment not found in this demo API.',
       hint: 'This demo only knows AWB 235-7167 9705.'
