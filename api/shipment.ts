@@ -83,7 +83,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   if (awbParam != '235-7167-9705') {
     res.status(404).json({
       error: 'Shipment not found in this demo API.',
-      hint: 'This demo only knows AWB 235-7167 9705.'
+      hint: 'This demo only knows AWB 235-7167-9705.'
     });
     return;
   }
